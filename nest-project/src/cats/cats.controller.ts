@@ -1,26 +1,40 @@
-import { SuccessInterceptor } from './../common/interceptors/successinterceptor';
-import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import {
+  Body,
   Controller,
   Get,
-  Param,
-  ParseIntPipe,
+  Post,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
+import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
+import { SuccessInterceptor } from './../common/interceptors/successinterceptor';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
   @Get()
-  getAllCats() {
-    return { cats: 'get all cats' };
+  getCurrentCat() {
+    return 'current cat';
   }
 
-  @Get('/:id')
-  getCat(@Param('id', ParseIntPipe) param: number) {
-    console.log(param);
-    return 'id';
+  @Post()
+  async signUp() {
+    return 'signup';
+  }
+
+  @Post('login')
+  logIn() {
+    return 'login';
+  }
+
+  @Post('logout')
+  logOut() {
+    return 'logout';
+  }
+
+  @Post('upload/cats')
+  uploadCatImg() {
+    return 'uploadImg';
   }
 }
