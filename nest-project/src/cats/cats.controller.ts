@@ -10,14 +10,19 @@ import {
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/successinterceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
-import { ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
+import { AuthService } from '../auth/auth.service';
+import { LoginRequestDto } from '../auth/dto/login.request.dto';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiProperty({
     example: 'someemail@naver.com',
@@ -43,9 +48,10 @@ export class CatsController {
     return await this.catsService.signUp(body);
   }
 
+  @ApiOperation({ summary: '로그인' })
   @Post('login')
-  logIn() {
-    return 'login';
+  logIn(@Body() body: LoginRequestDto) {
+    return this.authService.jwtLogIn(body);
   }
 
   @ApiProperty({
