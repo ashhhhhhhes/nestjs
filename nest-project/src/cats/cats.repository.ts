@@ -27,4 +27,18 @@ export class CatsRepository {
   async findCatByEmail(email: any): Promise<Cat | null> {
     return this.catModel.findOne({ email });
   }
+
+  async findCatByIdWithoutPassword(catId: string): Promise<Cat | null> {
+    return this.catModel.findById(catId).select('-password');
+  }
+
+  async findByIdAndUpdateImg(id: string, fileName: string) {
+    const cat: Cat = await this.catModel.findById(id);
+
+    cat.imgUrl = `http://localhost:8000/media/${fileName}`;
+
+    const newCat = await cat.save();
+
+    return newCat.readOnlyData;
+  }
 }

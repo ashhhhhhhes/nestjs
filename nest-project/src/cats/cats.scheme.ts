@@ -51,19 +51,28 @@ export class Cat extends Document {
     example: 'https://image.url.com/imag/555999',
     description: 'imgUrl',
   })
-  @Prop()
+  @Prop({
+    default: 'http://localhost:8000/media/cats/cat1658581939038.jpg',
+  })
   @IsString()
   imgUrl: string;
 
-  readonly readOnlyData: { id: string; email: string; name: string };
+  readonly readOnlyData: {
+    id: string;
+    email: string;
+    name: string;
+    imgUrl: string;
+  };
 }
 
 export const CatSchema = SchemaFactory.createForClass(Cat);
 
+// 읽기 전용 데이터 Res
 CatSchema.virtual('readOnlyData').get(function (this: Cat) {
   return {
     id: this.id,
     email: this.email,
     name: this.name,
+    imgUrl: this.imgUrl,
   };
 });

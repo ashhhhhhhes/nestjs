@@ -1,6 +1,6 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { forwardRef, Module } from '@nestjs/common';
-import { CatsController } from './cats.controller';
+import { CatsController } from './controllers/cats.controller';
 import { CatsService } from './cats.service';
 import { Cat, CatSchema } from './cats.scheme';
 import { CatsRepository } from './cats.repository';

@@ -4,13 +4,16 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { CatsModule } from '../cats/cats.module';
 import { JwtStrategy } from './jwt/jwt.strategy';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    // 환경 변수를 위한 설정. 아래 설정을 하지 않으면 환경변수에 접근을 못함 (process.env.ANY_VARIABLES)
+    ConfigModule.forRoot(),
     PassportModule.register({ session: false }),
 
     JwtModule.register({
-      secret: 'secret',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1y' },
     }),
 
