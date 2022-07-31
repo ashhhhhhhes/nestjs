@@ -6,13 +6,20 @@ import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import mongoose from 'mongoose';
+import { CommentsModule } from './comments/comments.module';
+import * as mongoose from 'mongoose';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useCreateIndex: true,
+      // useFindAndModify: false,
+    }),
+    CommentsModule,
     CatsModule,
-    MongooseModule.forRoot(process.env.MONGODB_URL),
     AuthModule,
   ],
   controllers: [AppController],
@@ -23,6 +30,6 @@ export class AppModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
-    mongoose.set('debug', true);
+    mongoose.set('debug', this.isDev);
   }
 }

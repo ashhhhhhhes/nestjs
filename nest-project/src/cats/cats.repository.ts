@@ -2,13 +2,17 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from './cats.scheme';
 import { Model } from 'mongoose';
+import { CommentsSchema } from '../comments/comments.schema';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class CatsRepository {
   constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
 
-  async findAll(): Promise<Array<Cat>> {
-    return this.catModel.find();
+  async findAll() {
+    const CommentsModel = mongoose.model('comments', CommentsSchema);
+
+    return this.catModel.find().populate('comments', CommentsModel);
   }
 
   async existsByEmail(email: string): Promise<boolean> {
