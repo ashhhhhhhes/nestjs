@@ -7,6 +7,10 @@ import { Model } from 'mongoose';
 export class CatsRepository {
   constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
 
+  async findAll(): Promise<Array<Cat>> {
+    return this.catModel.find();
+  }
+
   async existsByEmail(email: string): Promise<boolean> {
     try {
       // * boolean 으로 타입 지정하도록 결과 !! 처리

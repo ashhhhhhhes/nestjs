@@ -35,4 +35,9 @@ export class CatsService {
 
     return await this.catsRepository.findByIdAndUpdateImg(cat.id, fileName);
   }
+
+  async getAllCat() {
+    const cats = await this.catsRepository.findAll();
+    return cats.map((cat) => cat.readOnlyData);
+  }
 }
